@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/admin.css">
+</head>
+<body class="bodyIndex">
+
+    <button class="refreshIndexStat" onclick="refresh()">Rafraichir</button>
+    <p class="labelIndexStat" id="labelIndexStat"></p>
+
+    <div class="mainDivIndexStat">
+
+        <div class="divIndexStat">
+            <p class="titleIndexStat">Connecter:</p>
+            <p id="c">0</p>
+        </div>
+
+        <div class="divIndexStat">
+            <p class="titleIndexStat">Chercheur de question:</p>
+            <p id="sq">0</p>
+        </div>
+
+        <div class="divIndexStat">
+            <p class="titleIndexStat">Chercheur de repondeur:</p>
+
+            <p id="sr">0</p>
+        </div>
+
+        <div class="divIndexStat">
+            <p class="titleIndexStat">Membre:</p>
+            <p id="m">0</p>
+        </div>
+
+        <div class="divIndexStat">
+            <p class="titleIndexStat">Emails en cours d'envoi:</p>
+            <p id="me">0</p>
+        </div>
+
+    </div>
+
+    <script>
+        if(window.location.href.includes("?token=") < 1){
+            history.back()
+        }
+        const token = window.location.href.split("?")[1].replace("token=", "")
+
+        function refresh(){
+            const label = document.getElementById('labelIndexStat');
+            fetch("https://2Bee.gq/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "token" : token, 
+                    "action" : "getStat"
+                },
+                body: JSON.stringify({})
+                })
+                .then( response => response.json() )
+                .then( response => {
+                    if(response.statut == "error"){
+                        label.style.color = "red"
+                        label.innerText = response.info
+                    } 
+                    else{
+                        document.getElementById('c').innerText = response.info.c-1;
+                        document.getElementById('sq').innerText = response.info.sq;
+                        document.getElementById('sr').innerText = response.info.sr;
+                        document.getElementById('m').innerText = response.info.m;
+                        document.getElementById('me').innerText = response.info.me;
+                    }
+                })
+                .catch((error) => {
+                    label.style.color = "red"
+                    label.innerText = "Aucune réponse du serveur."
+                })
+        }
+        refresh()
+
+    </script>
+</body>
+</html>

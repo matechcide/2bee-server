@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/home.css">
+    <title>Document</title>
+</head>
+<script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
+<script src="/public/script/home.js"></script>
+<body>
+    <div
+        class="info"
+        >
+        <text class="titleInfo">Qu'est-ce que 2Bee ?</text>
+
+        <div class="images">
+
+            <div 
+                class="divImage1"
+                id="img1"
+                onmouseover="overimg1()" 
+                onmouseout="outimg1()"
+                >
+                <img class="image1" src="/public/images/ts81.png"/>
+            </div>
+
+            <div 
+                class="divImage2"
+                onmouseover="overimg2()" 
+                onmouseout="outimg2()"
+                >
+                <img class="image2" id="img2" src="/public/images/ts82.png"/>
+            </div>
+
+            <div 
+                class="divImage3"
+                id="img3"
+                onmouseover="overimg3()" 
+                onmouseout="outimg3()"
+                >
+                <img class="image3" src="/public/images/ts83.png"/>
+            </div>
+
+        </div>
+
+        <div class="divcanvas" id="divcanvas">
+            <canvas class="canvas" id="canvas"></canvas>
+        </div>
+
+        <div class="tags" id="tags">
+            <a>Google</a>
+            <a>Fish</a>
+            <a>Chips</a>
+            <a>Salt</a>
+            <a>Vinegar</a>
+        </div>
+
+    </div>
+    <script>
+        window.onload = function() {
+            try {
+                TagCanvas.Start('canvas','tags',{
+                    textColour: '#fff',
+                    depth: 0.8,
+                    maxSpeed: 0.06,
+                    minSpeed: 0.03,
+                    initial: [0.03,-0.03],
+                    wheelZoom: false,
+                    weightSize: 2,
+                });
+            } catch(e) {
+                document.getElementById('divcanvas').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>

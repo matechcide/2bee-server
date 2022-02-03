@@ -1,0 +1,90 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #2c3e50;
+    height: 100vh;
+}
+
+.info{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.titleInfo{
+    font-family: "Roboto", sans-serif;
+    font-size: 50px;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.images{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-width: 70%;
+}
+
+.divImage1{
+    display: flex;
+    margin-right: -70px;
+    max-width: 100%;
+    max-height: 100%;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.image1{
+    display: flex;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.divImage2{
+    display: flex;
+    z-index: 1;
+    max-width: 100%;
+    max-height: 100%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.image2{
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.divImage3{
+    display: flex;
+    margin-left: -70px;
+    max-width: 100%;
+    max-height: 100%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.image3{
+    display: flex;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.divcanvas{
+    margin-top: 50px;
+}
+
+.tags{
+    display: none;
+}

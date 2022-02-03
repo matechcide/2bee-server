@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="public/images/icon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/admin.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>AdminPanel 2Bee</title>
+</head>
+<body>
+    <div class="onglets">
+
+        <div class="titlePanel">
+            <a>AdminPanel</a>
+        </div>
+
+        <div 
+            class="onglet" 
+            id="1" 
+            onmousedown="mouseDown('indexStat', '1')" 
+            onmouseup="mouseUp('indexStat', '1')" 
+            onmouseover="mouseOver('1')" 
+            onmouseout="mouseOut('1')"
+            >
+
+            <a>Statistique</a>
+        </div>
+
+        <div 
+            class="onglet" 
+            id="2" 
+            onclick="mouseUp('indexCandidature', '2')" 
+            onmousedown="mouseDown('indexCandidature', '2')" 
+            onmouseover="mouseOver('2')" 
+            onmouseout="mouseOut('2')"
+            >
+
+            <a>Candidature</a>
+        </div>
+
+        <div 
+            class="onglet" 
+            id="3" 
+            onmousedown="mouseDown('indexReport', '3')" 
+            onmouseup="mouseUp('indexReport', '3')"
+            onmouseover="mouseOver('3')" 
+            onmouseout="mouseOut('3')"
+            >
+
+            <a>Signalment</a>
+        </div>
+
+        <div 
+            class="onglet" 
+            id="6" 
+            onmousedown="mouseDown('indexUpDate', '6')" 
+            onmouseup="mouseUp('indexUpDate', '6')" 
+            onmouseover="mouseOver('6')" 
+            onmouseout="mouseOut('6')"
+            >
+
+            <a>Mise à jour</a>
+        </div>
+        
+        <div 
+            class="onglet" 
+            id="4" 
+            onmousedown="mouseDown('indexMail', '4')" 
+            onmouseup="mouseUp('indexMail', '4')" 
+            onmouseover="mouseOver('4')" 
+            onmouseout="mouseOut('4')"
+            >
+
+            <a>Envoyer un mail</a>
+        </div>
+
+        <div 
+            class="onglet" 
+            id="5" 
+            onclick="mouseUp('indexLog', '5')" 
+            onmousedown="mouseDown('indexLog', '5')" 
+            onmouseover="mouseOver('5')" 
+            onmouseout="mouseOut('5')"
+            >
+
+            <a>Log</a>
+        </div>
+
+        <img class="logo" src="public/images/icon.png"/>
+
+    </div>
+
+    <div class="tableau">
+        <iframe class="page" id="page" src=""></iframe>
+    </div>
+        
+    <script>
+        let page = "1"
+        mouseUp("indexStat", page)
+
+        function mouseOver(id) {
+            document.getElementById(id).style.background = "white";
+        }
+
+        function mouseOut(id) {
+            if(id != page){
+                document.getElementById(id).style.background = "rgb(192, 192, 192)";
+            }
+        }
+
+        function mouseUp(e, id){
+            document.getElementById(page).style.background = "rgb(192, 192, 192)";
+            page = id
+            document.getElementById(id).style.background = "#FFF";
+            document.getElementById("page").src = "/public/admin/" + e + ".html" + "?" + window.location.href.split("?")[1]
+        }
+
+        function mouseDown(e, id){
+            document.getElementById(id).style.background = "rgb(192, 192, 192)";
+        }
+
+    </script>
+
+</body>
+
+</html>

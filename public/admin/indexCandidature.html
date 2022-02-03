@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/admin.css">
+</head>
+<body class="bodyIndex" id="bodyIndex">
+
+    <button class="refreshIndexCandidature" onclick="refresh()">Rafraichir</button>
+    <p class="labelIndexCandidature" id="labelIndexCandidature"></p>
+
+    <div class="mainDivIndexCandidature", id="mainDivIndexCandidature">
+
+    </div>
+
+    <script>
+        if(window.location.href.includes("?token=") < 1){
+            history.back()
+        }
+        const token = window.location.href.split("?")[1].replace("token=", "")
+
+        function refresh(){
+
+            document.getElementById('mainDivIndexCandidature').remove()
+            let div = document.createElement("div");
+            div.className = 'mainDivIndexCandidature';
+            div.id = 'mainDivIndexCandidature';
+            document.getElementById('bodyIndex').appendChild(div)
+
+            const label = document.getElementById('labelIndexCandidature');
+            label.innerText = ""
+            fetch("https://www.croglone.tk/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "token" : token, 
+                    "action" : "getBeta"
+                },
+                body: JSON.stringify({})
+                })
+                .then( response => response.json() )
+                .then( response => {
+                    if(response.statut == "error"){
+                        label.style.color = "red"
+                        label.innerText = response.info
+                    } 
+                    else{
+                        if(response.info.length < 1){
+                            let candidature = document.createElement("div");
+                            candidature.className = "candidatureIndexCandidature"
+                            candidature.appendChild(document.createTextNode("Pas de candidature"))
+                            document.getElementById('mainDivIndexCandidature').appendChild(candidature)
+                            return
+                        }
+                        for(const item of response.info){
+                            let candidature = document.createElement("div");
+                            candidature.className = "candidatureIndexCandidature"
+
+                            let temp = document.createElement("P")
+                            temp.innerText = "Nom: " + item.name
+                            candidature.appendChild(temp)
+
+                            temp = document.createElement("P")
+                            temp.innerText = "Age: " + item.age
+                            candidature.appendChild(temp)
+
+                            temp = document.createElement("P")
+                            temp.innerText = "Email: " + item.email
+                            candidature.appendChild(temp)
+
+                            temp = document.createElement("P")
+                            temp.innerText = "Mdp: " + item.mdp
+                            candidature.appendChild(temp)
+
+                            let button = document.createElement("BUTTON")
+                            button.innerHTML = "Valider"
+                            button.onclick = () => valide(item)
+                            candidature.appendChild(button)
+                            document.getElementById('mainDivIndexCandidature').appendChild(candidature)
+                        }
+                        
+                    }
+                })
+                .catch((error) => {
+                    label.style.color = "red"
+                    label.innerText = "Aucune réponse du serveur."
+                })
+        }
+        refresh()
+        function valide(log){
+            fetch("https://2Bee.gq/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "token" : token, 
+                    "action" : "addBeta"
+                },
+                body: JSON.stringify(log)
+                })
+                .then( response => response.json() )
+                .then( response => {
+                    if(response.statut == "error"){
+                        label.style.color = "red"
+                        label.innerText = response.info
+                    } 
+                    else{
+                        refresh()
+                    }
+                })
+                .catch((error) => {
+                    label.style.color = "red"
+                    label.innerText = "Aucune réponse du serveur."
+                })
+        }
+
+    </script>
+</body>
+</html>

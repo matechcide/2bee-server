@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/admin.css">
+</head>
+<body class="bodyIndex" id="bodyIndex">
+
+    <div class="divFiltreIndexLog">
+        <button class="refreshIndexLog" onclick="refresh()">Rafraichir</button>
+        <input class="indexFiltreIndexLog" id="indexFiltreIndexLog" type="text" placeholder="index">
+        <input class="valueFiltreIndexLog" id="valueFiltreIndexLog" type="text" placeholder="value">
+    </div>
+
+    <button class="deleteIndexLog" onclick="deleteLog()">delete</button>
+
+    <p class="labelIndexLog" id="labelIndexLog"></p>
+
+    <div class="mainDivIndexLog", id="mainDivIndexLog">
+
+    </div>
+
+    <script>
+        if(window.location.href.includes("?token=") < 1){
+            history.back()
+        }
+        const token = window.location.href.split("?")[1].replace("token=", "")
+
+        function refresh(){
+
+            document.getElementById('mainDivIndexLog').remove()
+            let div = document.createElement("div");
+            div.className = 'mainDivIndexLog';
+            div.id = 'mainDivIndexLog';
+            document.getElementById('bodyIndex').appendChild(div)
+
+            const label = document.getElementById('labelIndexLog');
+            label.innerText = ""
+            fetch("https://2Bee.gq/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "token" : token, 
+                    "action" : "getLog",
+                },
+                body: JSON.stringify({
+                    "index" : document.getElementById('indexFiltreIndexLog').value,
+                    "value" : document.getElementById('valueFiltreIndexLog').value
+                })
+                })
+                .then( response => response.json() )
+                .then( response => {
+                    if(response.statut == "error"){
+                        label.style.color = "red"
+                        label.innerText = response.info
+                    } 
+                    else{
+                        if(response.info.length < 1){
+                            let candidature = document.createElement("div");
+                            candidature.className = "candidatureIndexLog"
+                            candidature.appendChild(document.createTextNode("Pas de log"))
+                            document.getElementById('mainDivIndexLog').appendChild(candidature)
+                            return
+                        }
+                        //response.info = response.info.reverse()
+                        for(const item of response.info){
+                            let candidature = document.createElement("div");
+                            candidature.className = "candidatureIndexLog"
+
+                            let temp = document.createElement("P")
+                            temp.innerText = "Action: \n" + item.action
+                            candidature.appendChild(temp)
+
+                            temp = document.createElement("P")
+                            temp.innerText = "Statut: \n" + item.statut
+                            candidature.appendChild(temp)
+
+                            temp = document.createElement("P")
+                            temp.innerText = "Date: \n" + new Date(item.date)
+                            candidature.appendChild(temp)
+
+                            temp = document.createElement("P")
+                            temp.innerText = "Info: \n" + item.info
+                            candidature.appendChild(temp)
+                            
+                            let button = document.createElement("BUTTON")
+                            button.innerHTML = "delete"
+                            button.onclick = () =>{
+                                deleteLog("date", item.date)
+                            }
+                            candidature.appendChild(button)
+
+                            document.getElementById('mainDivIndexLog').appendChild(candidature)
+                        }
+                        
+                    }
+                })
+                .catch((error) => {
+                    label.style.color = "red"
+                    label.innerText = "Aucune réponse du serveur."
+                })
+        }
+        refresh()
+
+        function deleteLog(index=document.getElementById('indexFiltreIndexLog').value, value=document.getElementById('valueFiltreIndexLog').value){
+            
+            const label = document.getElementById('labelIndexLog');
+            label.innerText = ""
+            fetch("https://2Bee.gq/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "token" : token, 
+                    "action" : "deleteLog",
+                },
+                body: JSON.stringify({
+                    "index" : index,
+                    "value" : value
+                })
+                })
+                .then( response => response.json() )
+                .then( response => {
+                    if(response.statut == "error"){
+                        label.style.color = "red"
+                        label.innerText = response.info
+                    } 
+                    else{
+                        document.getElementById('indexFiltreIndexLog').value = ""
+                        document.getElementById('valueFiltreIndexLog').value = ""
+                        refresh()
+                    }
+                })
+                .catch((error) => {
+                    label.style.color = "red"
+                    label.innerText = "Aucune réponse du serveur."
+                })
+            
+        }
+        
+    </script>
+</body>
+</html>

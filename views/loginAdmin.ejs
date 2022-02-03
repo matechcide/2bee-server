@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="public/images/icon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/master.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>AdminPanel 2Bee</title>
+</head>
+<body>
+    <div class="container">
+        <form method="POST" id="form">
+            <img class="logo" src="public/images/icon.png"/>
+            <br>
+            <input type="text" name="id" id="id" placeholder="Entrez votre ID" required=true>
+            <br>
+            <br>
+            <input type="submit" value="se connecter">
+            <br>
+            <p class="success" id="success"></p>
+            <p class="error" id="error"></p>
+        </form>
+    </div>
+
+    <script>
+        let form = document.getElementById('form');
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            let id = form.id.value
+            let error = document.getElementById('error')
+            let success = document.getElementById('success')
+            error.style.display = "none"
+            success.style.display = "none"
+            if(id.length < 15){
+                error.innerText = "Saisissez un ID valide."
+                error.style.display = "block"
+                success.style.display = "none"
+                return
+            }
+            success.innerText = "En attente d'une réponse du serveur."
+            success.style.display = "block";
+            error.style.display = "none";
+            fetch("https://2bee.gq/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "action" : "login"
+                },
+                body: JSON.stringify( {
+                    "id": id
+                } )
+            })
+            .then( response => response.json() )
+            .then( response => {
+                if(response.statut == "error"){
+                    error.innerText = response.info
+                    error.style.display = "block"
+                    success.style.display = "none";
+                } 
+                else{
+                    success.innerText = response.info
+                    success.style.display = "block";
+                    error.style.display = "none";
+                    
+                }
+            })
+            .catch((error) => {
+                error.innerText = "Aucune réponse du serveur."
+                error.style.display = "block"
+                success.style.display = "none";
+            })
+
+        });
+    </script>
+
+</body>
+
+</html>

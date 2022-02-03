@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/admin.css">
+</head>
+<body class="bodyIndex">
+
+    <div class="divIndexUpDate">
+        <input class="versionInputIndexUpDate" id="versionInputIndexUpDate" type="text" placeholder="Version">
+        <button class="buttonInputIndexUpDate" onclick="sendUpDate()">Envoyer</button>
+    </div>
+
+    <input class="dlIndexUpDate" id="dlIndexUpDate" type="text" placeholder="Lien de téléchargement">
+
+    <p class="labelIndexUpDate" id="labelIndexUpDate"></p>
+
+    <div class="divPatchIndexUpDate">
+        <textarea class="patchIndexUpDate" id="patchIndexUpDate" type="text" placeholder="Patch"></textarea>
+    </div>
+
+    <div class="divPSIndexUpDate">
+        <textarea class="psIndexUpDate" id="psIndexUpDate" type="text" placeholder="Post-scriptum"></textarea>
+    </div>
+
+    <script>
+        if(window.location.href.includes("?token=") < 1){
+            history.back()
+        }
+        const token = window.location.href.split("?")[1].replace("token=", "")
+
+        function sendUpDate(){
+            const label = document.getElementById('labelIndexUpDate');
+            const version = document.getElementById('versionInputIndexUpDate').value;
+            const patch = document.getElementById('patchIndexUpDate').value;
+            const ps = document.getElementById('psIndexUpDate').value;
+            const link = document.getElementById('dlIndexUpDate').value;
+            if(version.length < 1 || patch.length < 1 || ps.length < 1 || link.length < 1){
+                label.style.color = "red"
+                label.innerText = "Entré invalide."
+            }
+            else{
+                label.style.color = "green"
+                label.innerText = "En attente d'une réponse du serveur."
+                fetch("https://2Bee.gq/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "token" : token, 
+                    "action" : "sendUpDate"
+                },
+                body: JSON.stringify( {
+                    "version": version, 
+                    "patch": patch,
+                    "ps": ps,
+                    "link": link,
+                } )
+                })
+                .then( response => response.json() )
+                .then( response => {
+                    if(response.statut == "error"){
+                        label.style.color = "red"
+                        label.innerText = response.info
+                    } 
+                    else{
+                        label.style.color = "green"
+                        label.innerText = response.info
+                        document.getElementById('versionInputIndexUpDate').value = "";
+                        document.getElementById('patchIndexUpDate').value = "";
+                        document.getElementById('psIndexUpDate').value = "";
+                        document.getElementById('dlIndexUpDate').value = "";
+                        
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    label.style.color = "red"
+                    label.innerText = "Aucune réponse du serveur."
+                })
+            }
+        }
+
+    </script>
+</body>
+</html>

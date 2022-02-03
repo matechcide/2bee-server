@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/admin.css">
+</head>
+<body class="bodyIndex">
+
+    <div class="divIndexMail">
+        <input class="subjectInputIndexMail" id="subjectInputIndexMail" type="text" placeholder="Sujet du mail">
+        <button class="buttonInputIndexMail" onclick="sendMail()">Envoyer</button>
+    </div>
+
+    <p class="labelIndexMail" id="labelIndexMail"></p>
+
+    <div class="divTextareaIndexMail">
+        <textarea class="textInputIndexMail" id="textInputIndexMail" type="text" placeholder="Text du mails..."></textarea>
+    </div>
+
+    <script>
+        if(window.location.href.includes("?token=") < 1){
+            history.back()
+        }
+        const token = window.location.href.split("?")[1].replace("token=", "")
+
+        function sendMail(){
+            const label = document.getElementById('labelIndexMail');
+            const subject = document.getElementById('subjectInputIndexMail').value;
+            const text = document.getElementById('textInputIndexMail').value;
+            if(text.length < 1 || subject.length < 1){
+                label.style.color = "red"
+                label.innerText = "Entré invalide."
+            }
+            else{
+                label.style.color = "green"
+                label.innerText = "En attente d'une réponse du serveur."
+                fetch("https://2Bee.gq/AdminPanel/", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "token" : token, 
+                    "action" : "sendMail"
+                },
+                body: JSON.stringify( {
+                    "subject": subject, 
+                    "text" : text
+                } )
+                })
+                .then( response => response.json() )
+                .then( response => {
+                    if(response.statut == "error"){
+                        label.style.color = "red"
+                        label.innerText = response.info
+                    } 
+                    else{
+                        label.style.color = "green"
+                        label.innerText = response.info
+                        const subject = document.getElementById('subjectInputIndexMail').value = "";
+                        const text = document.getElementById('textInputIndexMail').value = "";
+                        
+                    }
+                })
+                .catch((error) => {
+                    label.style.color = "red"
+                    label.innerText = "Aucune réponse du serveur."
+                })
+            }
+        }
+    </script>
+</body>
+</html>

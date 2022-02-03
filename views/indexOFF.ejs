@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <script data-ad-client="ca-pub-8376924161030137" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link rel="icon" href="public/images/icon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/css/index.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>2Bee</title>
+</head>
+<body>
+    <div class="tb">
+        <img class="logo" src="public/images/icon.png"/>
+        <div class="onglets">
+            <div 
+                class="onglet" 
+                id="1" 
+                onmousedown="mouseDown('1')" 
+                onmouseup="mouseUp('home', '1')" 
+                onmouseover="mouseOver('1')" 
+                onmouseout="mouseOut('1')"
+                >
+
+                <a>Accueil</a>
+
+                <div 
+                    class="select" 
+                    id="s1"
+                    >
+
+                </div>
+            </div>
+
+            <div 
+                class="onglet" 
+                id="2" 
+                onmousedown="mouseDown('2')" 
+                onmouseup="mouseUp('upDate', '2')" 
+                onmouseover="mouseOver('2')" 
+                onmouseout="mouseOut('2')"
+                >
+
+                <a>Mise à jour</a>
+
+                <div 
+                    class="select" 
+                    id="s2"
+                    >
+
+                </div>
+            </div>
+
+        </div>
+        
+        <div 
+            class="logButton" 
+            id="betaTest" 
+            onmousedown="mouseDown('betaTest')"
+            onmouseup="mouseUp('connect', 'betaTest')"
+            onmouseover="mouseOver('betaTest')" 
+            onmouseout="mouseOut('betaTest')"
+            >
+
+            <a>Se connecter/S'enregistrer</a>
+
+            <div 
+                class="select"
+                id="sbetaTest"
+                >
+
+            </div>
+        </div>
+    </div>
+
+    <div class="tableau">
+        <object class="page" id="page" rel="import" data=""> <object/>
+    </div>
+    
+
+    <script>
+        // <iframe class="page" id="page" src=""></iframe>
+        let page = "1"
+        const args = {}
+        try {
+            for(const arg of window.location.href.split("?")[1].split("&")){
+                args[arg.split("=")[0]] = arg.split("=")[1]
+            }
+            if(args.get){
+                mouseUp(args.get, args.get)
+            }
+        } 
+        catch(error){
+            mouseUp("home", page)
+        }
+
+
+        function mouseOver(id) {
+            if(id != page){
+                document.getElementById(id).style.background = "#2c3e50";
+                document.getElementById("s" + id).style.background = "#2c3e50";
+            }
+        }
+
+        function mouseOut(id) {
+            if(id != page){
+                document.getElementById(id).style.background = "#34495e";
+                document.getElementById("s" + id).style.background = "#34495e";
+            }
+        }
+
+        function mouseUp(e, id){
+            try{
+                document.getElementById(page).style.background = "#34495e";
+                document.getElementById("s" + page).style.background = "#34495e";
+            }
+            catch{}
+
+            try{
+                page = id;
+                document.getElementById(page).style.background = "#2c3e50";
+                document.getElementById("s" + page).style.background = "#fff";
+            }
+            catch{}
+
+            document.getElementById("page").data = "/public/view/" + e + ".html?" + window.location.href.split("?")[1]
+            
+        }
+
+        function mouseDown(id){
+            document.getElementById(id).style.background = "#1a2530";
+            document.getElementById("s" + id).style.background = "#1a2530";
+        }
+    </script>
+    
+</body>
+</html>

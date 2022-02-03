@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #2c3e50;
+    height: 100vh;
+}
+
+.container {
+    background: #34495e;
+    border-radius: 3px;
+    padding: 20px 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type=email], input[type=password], input[type=text], input[type=number]{
+    padding: 10px 10px;
+    width: 250px;
+}
+
+input[type=submit] {
+    background: #2ecc71;
+    padding: 20px 30px;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 500000px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: #2d3436;
+}
+
+.goToCreate{
+    background: #767e7a;
+    padding: 10px;
+    font-family: "Roboto", sans-serif;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    color: #2d3436;
+    display: block;
+    margin: 0 auto;
+}
+
+input[type=submit]:hover {
+    background: #27ae60;
+}
+
+.error {
+    color: red;
+    font-family: "Roboto", sans-serif;
+    display: none;
+}
+
+.success {
+    color: green;
+    font-family: "Roboto", sans-serif;
+    display: none;
+}
+
+.logo{
+    height: 100px;
+    width: 100px;
+    align-self: center;
+}
+
+.buttonConnect{
+    background-color: #2ecc71;
+    padding: 20px 30px;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 500000px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: #2d3436;
+}
+
+.buttonRegister{
+    margin-top: 25px;
+    background-color: #a7a59b;
+    padding: 10px;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 500000px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: #2d3436;
+}
